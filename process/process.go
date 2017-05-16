@@ -26,7 +26,7 @@ const (
 
 const (
 	shellMessage = `
-	
+
 	Shell: %q
 	Status: %t (%q)
 	Reason: \n%+q
@@ -86,6 +86,8 @@ func (c Command) Run(ctx context.Context, out, werr io.Writer) error {
 		log.Debugf("Process : Debug : Command : %s : %s", c.Name, fmt.Sprintf(commandMessage, c.Name, c.Args, proc.ProcessState.Success(), proc.ProcessState.String()))
 	}
 
+	log.Debugf("Process : Debug : Command : %s : %s", c.Name, fmt.Sprintf(commandPidMessage, c.Name, c.Args, proc.Process.Pid))
+
 	if !c.Async {
 		if err := proc.Wait(); err != nil {
 			log.Errorf("Process : Error : Command : Begin Execution : %q : %q", c.Name, c.Args)
@@ -101,8 +103,6 @@ func (c Command) Run(ctx context.Context, out, werr io.Writer) error {
 			return nil
 		}
 	}
-
-	log.Debugf("Process : Debug : Command : %s : %s", c.Name, fmt.Sprintf(commandPidMessage, c.Name, c.Args, proc.Process.Pid))
 
 	return nil
 }
