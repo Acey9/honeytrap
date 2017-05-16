@@ -26,16 +26,25 @@ const (
 
 const (
 	shellMessage = `
+	
 	Shell: %q
 	Status: %t (%q)
 	Reason: \n%+q
 	Script: %+q
 `
 	commandMessage = `
+
 	Command: %q
 	Arguments: %+q
 	Status: %t (%q)
 	Reason: \n%+q
+`
+
+	commandPidMessage = `
+
+	Command: %q
+	Arguments: %+q
+	Process Pid: %d 
 `
 )
 
@@ -73,7 +82,7 @@ func (c Command) Run(ctx context.Context, out, werr io.Writer) error {
 		}
 	}()
 
-	if c.Level > Normal {
+	if c.Level > Normal && proc.ProcessState != nil {
 		log.Debugf("Process : Debug : Command : %s : %s", c.Name, fmt.Sprintf(commandMessage, c.Name, c.Args, proc.ProcessState.Success(), proc.ProcessState.String()))
 	}
 
@@ -92,6 +101,8 @@ func (c Command) Run(ctx context.Context, out, werr io.Writer) error {
 			return nil
 		}
 	}
+
+	log.Debugf("Process : Debug : Command : %s : %s", c.Name, fmt.Sprintf(commandPidMessage, c.Name, c.Args, proc.Process.Pid))
 
 	return nil
 }
