@@ -73,7 +73,7 @@ func runServer(c *cli.Context) {
 	cpuProfileArg := fmt.Sprintf("--cpu-profile %t", cpuProfileFile)
 	memProfileArg := fmt.Sprintf("--mem-profile %t", memProfileFile)
 
-	serverCmd := process.AsyncProcess{
+	serverCmd := process.SyncProcess{
 		Commands: []process.Command{
 			{
 				Name:  "honeytrap-serve",
@@ -85,7 +85,7 @@ func runServer(c *cli.Context) {
 
 	var pout, perr bytes.Buffer
 
-	if err := serverCmd.AsyncExec(context.Background(), &pout, &perr); err != nil {
+	if err := serverCmd.ASyncExec(context.Background(), &pout, &perr); err != nil {
 		fmt.Println(perr.String())
 		return
 	}
