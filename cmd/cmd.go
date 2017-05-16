@@ -85,7 +85,7 @@ func runServer(c *cli.Context) {
 
 	var pout, perr bytes.Buffer
 
-	if err := serverCmd.ASyncExec(context.Background(), &pout, &perr); err != nil {
+	if err := serverCmd.Exec(context.Background(), &pout, &perr); err != nil {
 		fmt.Println(perr.String())
 		return
 	}
